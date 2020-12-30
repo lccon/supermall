@@ -34,28 +34,7 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      redirect: "/home"
-    },
-    {
-      path: '/home',
-      component: Home
-    },
-    {
-      path: '/category',
-      component: Category
-    },
-    {
-      path: '/cart',
-      component: Cart
-    },
-    {
-      path: '/profile',
-      component: Profile
-    }
-  ],
+  routes
 })
 
 export default router

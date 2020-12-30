@@ -1,13 +1,243 @@
 <template>
-    <h2>分类</h2>
+  <div class="wrapper" ref="aaa">
+    <ul class="content">
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+      <li>分类1</li>
+    </ul>
+  </div>
 </template>
 
 <script>
+  import BScroll from 'better-scroll'
+
   export default {
-    name: "category"
+    name: "category",
+    data() {
+      return {
+        scroll: '',
+      }
+    },
+    mounted() {
+      this.scroll = new BScroll(this.$refs.aaa, {
+
+      })
+    }
   }
 </script>
 
 <style scoped>
+ .wrapper {
+   height: 300px;
+   background-color: orange;
 
+   /*overflow: hidden;*/
+   overflow-y: scroll;
+ }
 </style>

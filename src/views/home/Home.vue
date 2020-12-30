@@ -9,7 +9,8 @@
     <home-swiper :banners="banners"/>
     <recommend-view :recommends="recommends"/>
     <feature-view/>
-    <tab-control class="tab-control" :titles="['流行', '新款', '精选']"/>
+    <tab-control class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick"/>
+    <good-list :goods="goodList"/>
 
     <ul>
       <li>标签1</li>
@@ -120,11 +121,13 @@
 
 <script>
   import NarBar from "components/common/navbar/NarBar"
-  import {getHomeMultiData} from "network/home.js"
   import HomeSwiper from "views/home/childComps/HomeSwiper"
   import RecommendView from "./childComps/RecommendView"
   import FeatureView from "./childComps/FeatureView"
   import TabControl from "components/content/tabControl/TabControl"
+  import GoodList from "components/content/goods/GoodsList"
+
+  import {getHomeMultiData, getHomeGoods} from "network/home.js"
 
   export default {
     name: "home",
@@ -133,19 +136,61 @@
       HomeSwiper,
       RecommendView,
       FeatureView,
-      TabControl
+      TabControl,
+      GoodList,
     },
     data() {
       return {
         banners: [],
-        recommends: []
+        recommends: [],
+        goods: {
+          'pop': {page:0, list:[]},
+          'new': {page:0, list:[]},
+          'sell': {page:0, list:[]}
+        },
+        currentType: 'pop',
+      }
+    },
+    computed: {
+      goodList(){
+        return this.goods[this.currentType].list
       }
     },
     created() {
-      getHomeMultiData().then(res=> {
-        this.banners = res.data.data.banner.list;
-        this.recommends = res.data.data.recommend.list;
-      })
+      this.getHomeMultiData();
+      // 商品列表
+      this.getHomeGoods('pop');
+      this.getHomeGoods('new');
+      this.getHomeGoods('sell');
+
+    },
+    methods: {
+      getHomeMultiData() {
+        getHomeMultiData().then(res => {
+          this.banners = res.data.data.banner.list;
+          this.recommends = res.data.data.recommend.list;
+        })
+      },
+      getHomeGoods(type){
+        const page = this.goods[type].page + 1;
+        getHomeGoods(type, page).then(res => {
+          this.goods[type].list.push(...res.data.data.list);
+          this.goods[type].page += 1;
+        })
+      },
+      tabClick(index) {
+        switch(index) {
+          case 0:
+            this.currentType = 'pop'
+            break;
+          case 1:
+            this.currentType = 'new'
+            break;
+          case 2:
+            this.currentType = 'sell'
+            break;
+        }
+      }
     }
   }
 </script>
@@ -169,5 +214,6 @@
   .tab-control {
     position: sticky;
     top: 44px;
+    z-index: 9;
   }
 </style>
