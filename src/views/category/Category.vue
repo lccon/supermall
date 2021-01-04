@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper" ref="aaa">
     <ul class="content">
+      <button @click="btnClick">按钮</button>
       <li>分类1</li>
       <li>分类1</li>
       <li>分类1</li>
@@ -221,13 +222,32 @@
     name: "category",
     data() {
       return {
-        scroll: '',
+        scroll: null
       }
     },
     mounted() {
       this.scroll = new BScroll(this.$refs.aaa, {
-
+        probeType: 2,
+        pullUpLoad: true,
+        click: true,
       })
+
+      this.scroll.on("scroll", (position) => {
+        console.log(position)
+      })
+
+      this.scroll.on("pullingUp", () => {
+        console.log("上拉加载");
+
+        setTimeout(() => {
+          this.scroll.finishPullUp();
+        }, 2000)
+      })
+    },
+    methods: {
+      btnClick() {
+        console.log("hello world");
+      }
     }
   }
 </script>
