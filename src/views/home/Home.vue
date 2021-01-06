@@ -5,17 +5,18 @@
       <h2 slot="center">购物街</h2>
       <h2 slot="right"></h2>
     </nar-bar>
+    <tab-control :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl1" class="tab-control" v-show="isTabFixed"/>
     <scroll class="content"
             ref="scroll"
             :probeType="3"
             @scroll="scroll"
             :pullUpLoad="true"
             @pullingUp="pullingUp">
-      <home-swiper :banners="banners"/>
+      <home-swiper :banners="banners" @imgLoad="imgLoad"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
       <!--<tab-control class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick"/>-->
-      <tab-control :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl"/>
+      <tab-control :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl2"/>
       <good-list :goods="goodList"/>
     </scroll>
     <back-top @click.native="backTopClick" v-show="isShowBackTop"/>
@@ -58,7 +59,9 @@
         },
         currentType: 'pop',
         isShowBackTop: false,
-        tabOffsetTop: 0
+        tabOffsetTop: 0,
+        isTabFixed: false,
+        scrollY: 0
       }
     },
     computed: {
@@ -83,10 +86,8 @@
 
       // 获取tabControl的吸顶高度
       // 组件没有offsetTop属性，从$el得到普通标签在获取offsetTop属性
-      this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop;
+      /*this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop;*/
 
-      console.log(this.$refs.tabControl.$el.offsetTop)
-      console.log(this.$refs.tabControl.offsetTop)
     },
     methods: {
       getHomeMultiData() {
@@ -117,17 +118,35 @@
             this.currentType = 'sell'
             break;
         }
+        this.$refs.tabControl1.currentIndex = index;
+        this.$refs.tabControl2.currentIndex = index;
       },
       backTopClick() {
         this.$refs.scroll.scrollTo(0, 0, 500);
       },
       scroll(position) {
         this.isShowBackTop = -position.y > 1000;
+        // 是否具有吸顶效果
+        this.isTabFixed = -position.y >= this.tabOffsetTop
       },
       pullingUp() {
         this.getHomeGoods(this.currentType);
-      }
-    }
+      },
+      imgLoad() {
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
+      },
+    },
+    activated() {
+      this.$refs.scroll.scrollTo(0, this.scrollY, 0);
+      // 注意刷新
+      this.$refs.scroll.refresh();
+    },
+    deactivated() {
+      this.scrollY = this.$refs.scroll.getScrollY();
+    },
+    /*destroyed() {
+      console.log("销毁");
+    }*/
   }
 </script>
 
@@ -142,11 +161,12 @@
     background-color: var(--color-tint);
     color: #fff;
 
-    position: fixed;
+    /*原生滚动，导航不跟随浏览器一起滚动设置 */
+   /* position: fixed;
     left: 0;
     right: 0;
     top: 0;
-    z-index: 9;
+    z-index: 9;*/
   }
 
   /*使用better-scorll代替自定义吸顶效果*/
@@ -172,5 +192,18 @@
     bottom: 49px;
     left: 0;
     right: 0;
+  }
+
+  /* 吸顶效果 */
+  .isTabFixed {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 44px;
+  }
+
+  .tab-control {
+    position: relative;
+    z-index: 9;
   }
 </style>
