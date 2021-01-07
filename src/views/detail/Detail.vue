@@ -1,27 +1,52 @@
 <template>
   <div class="detail">
     <detail-nav-bar/>
-    <detail-swiper :swiperItems="swiperItems"/>
+    <scroll class="content" ref="scroll">
+      <detail-swiper :swiperItems="swiperItems"/>
+      <detail-base-info :goods="goods"/>
+      <detail-shop-info :shop="shop"/>
+      <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad"/>
+      <detail-param-info :paramInfo="goodsParam"/>
+      <!--<detail-comment-info :commentInfo="commentInfo"/>-->
+    </scroll>
   </div>
 </template>
 
 <script>
   import DetailNavBar from './childComps/DetailNavBar'
   import DetailSwiper from "./childComps/DetailSwiper"
+  import DetailBaseInfo from "./childComps/DetailBaseInfo"
+  import DetailShopInfo from "./childComps/DetailShopInfo"
+  import DetailGoodsInfo from "./childComps/DetailGoodsInfo"
+  import DetailParamInfo from "./childComps/DetailParamInfo"
+  import DetailCommentInfo from "./childComps/DetailCommentInfo"
 
-  import {getDetail} from 'network/detail'
+  import Scroll from "components/common/scroll/Scroll"
+
+  import {getDetail, Goods, Shop, GoodsParam} from 'network/detail'
 
   export default {
     name: "detail",
     data() {
       return {
         iid: null,
-        swiperItems: []
+        swiperItems: [],
+        goods: {},
+        shop: {},
+        detailInfo: {},
+        goodsParam: {},
+        commentInfo: {}
       }
     },
     components: {
       DetailNavBar,
-      DetailSwiper
+      DetailSwiper,
+      DetailBaseInfo,
+      DetailShopInfo,
+      Scroll,
+      DetailGoodsInfo,
+      DetailParamInfo,
+      DetailCommentInfo
     },
     created() {
       // 保存传过来的id
@@ -34,15 +59,37 @@
       getDetail(iid) {
         getDetail(iid).then((res) => {
           console.log(res);
-          this.swiperItems = res.data.result.itemInfo.topImages;
+          const data = res.data.result
+          this.swiperItems = data.itemInfo.topImages;
+          this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services);
+          this.shop = new Shop(data.shopInfo);
+          this.detailInfo = data.detailInfo;
+          this.goodsParam = new GoodsParam(data.itemParams.info, data.itemParams.rule);
+          if (data.rate.cRate !== 0) {
+            this.commentInfo = data.rate.list[0]
+          }
         })
+      },
+      imageLoad() {
+        //console.log("加载完成");
+        this.$refs.scroll.refresh();
       }
     }
   }
 </script>
 
 <style scoped>
+  .detail {
+    position: relative;
+    z-index: 9;
+    background-color: #fff;
+    height: 100vh;
+  }
 
+  .content {
+    height: calc(100% - 44px);
+    overflow: hidden;
+  }
 </style>
 
 来感受下身体与灵魂的双重释放
