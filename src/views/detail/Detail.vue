@@ -50,7 +50,10 @@
     },
     created() {
       // 保存传过来的id
-      this.iid = this.$route.params.iid;
+      console.log("route" + this.$route);
+      this.iid = this.$route.query.iid;
+
+      console.log(this.iid);
 
       // 获取详情数据
       this.getDetail(this.iid);
