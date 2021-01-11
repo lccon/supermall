@@ -1,14 +1,17 @@
 <template>
   <div class="detail">
-    <detail-nav-bar/>
-    <scroll class="content" ref="scroll">
+    <detail-nav-bar @locationClick="locationClick" ref="topNavBar"/>
+    <scroll ref="scroll"
+            class="content"
+            :probeType="3"
+            @scroll="scrollPosition">
       <detail-swiper :swiperItems="swiperItems"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
       <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad"/>
-      <detail-param-info :paramInfo="goodsParam"/>
-      <detail-comment-info :commentInfo="commentInfo"/>
-      <goods-list :goods="recommend"/>
+      <detail-param-info ref="paramsInfo" :paramInfo="goodsParam"/>
+      <detail-comment-info ref="comment" :commentInfo="commentInfo"/>
+      <goods-list ref="recommendInfo" :goods="recommend"/>
     </scroll>
   </div>
 </template>
@@ -41,6 +44,9 @@
         goodsParam: {},
         commentInfo: {},
         recommend: [],
+        locationScrollY: [],
+        locationDebounceFun: null,
+        currentIndex: null
       }
     },
     mixins: [itemListenerMixin],
@@ -63,6 +69,8 @@
       this.getDetail(this.iid);
       // 获取详情页最下边详情数据；
       this.getRecommends();
+
+      this.locationDebounceFun = this.locationDebounce();
     },
     mounted() {
     },
@@ -78,6 +86,7 @@
           if (data.rate.cRate !== 0) {
             this.commentInfo = data.rate.list[0]
           }
+
         })
       },
       getRecommends() {
@@ -86,13 +95,50 @@
         })
       },
       imageLoad() {
-        //this.$refs.scroll.refresh();
-        this.itemListener;
+        this.$refs.scroll.refresh();
+        //this.itemListener;
+
+        this.locationDebounceFun();
       },
+      locationClick(index) {
+        this.$refs.scroll.scrollTo(0, -this.locationScrollY[index], 100);
+      },
+      locationDebounce() {
+        return debounce(()=> {
+          this.locationScrollY = [];
+          this.locationScrollY.push(0);
+          this.locationScrollY.push(this.$refs.paramsInfo.$el.offsetTop);
+          this.locationScrollY.push(this.$refs.comment.$el.offsetTop);
+          this.locationScrollY.push(this.$refs.recommendInfo.$el.offsetTop);
+
+          // console.log(this.locationScrollY);
+        }, 200);
+      },
+      scrollPosition(position) {
+        for(let i in this.locationScrollY) {
+          const y = i * 1;
+          // const y = parseInt(i);
+          if(this.currentIndex !== y &&
+            (y < this.locationScrollY.length - 1 && this.locationScrollY[y] <= (-position.y) && this.locationScrollY[y+1] >= (-position.y)) ||
+            (y >= this.locationScrollY.length - 1 && this.locationScrollY[y] <= (-position.y))) {
+            this.currentIndex = y
+            this.$refs.topNavBar.currentIndex = this.currentIndex ;
+          }
+        }
+      }
     },
     destroyed() {
       this.$bus.$off("itemImgLoad", this.itemListener);
-    }
+    },
+    /*updated() {
+      this.locationScrollY = [];
+      this.locationScrollY.push(0);
+      this.locationScrollY.push(this.$refs.paramsInfo.$el.offsetTop);
+      this.locationScrollY.push(this.$refs.comment.$el.offsetTop);
+      this.locationScrollY.push(this.$refs.recommendInfo.$el.offsetTop);
+
+      console.log(this.locationScrollY);
+    }*/
   }
 </script>
 
@@ -109,6 +155,3 @@
     overflow: hidden;
   }
 </style>
-
-来感受下身体与灵魂的双重释放
-一旁大爷：哎呦卧槽，这年轻人...，卧槽
