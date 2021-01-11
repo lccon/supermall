@@ -56,6 +56,7 @@
         this.scroll && this.scroll.finishPullUp();
       },
       refresh() {
+        console.log("aaaa");
         // 刷新滚动区域的高度，解决图片加载慢影响高度
         this.scroll && this.scroll.refresh();
       },

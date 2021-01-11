@@ -26,7 +26,8 @@
 </template>
 
 <script>
-  import { formatDate } from "../../../common/utils";
+  import { formatDate } from "common/utils";
+
   export default {
     name: "DetailCommentInfo",
     props:{
@@ -40,10 +41,9 @@
     filters:{
       showDate(value) {
         // 1.将时间戳转化为date对象
-        const date = new Date(value * 1000)
-
-        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+        const date = new Date(value * 1000);
         // 2.将date进行格式化
+        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
       }
     }
   }

@@ -35,6 +35,7 @@
 
   import {getHomeMultiData, getHomeGoods} from "network/home.js"
   import {debounce} from "common/utils"
+  import {itemListenerMixin} from "common/mixin"
 
   export default {
     name: "home",
@@ -48,6 +49,7 @@
       Scroll,
       BackTop
     },
+    mixins: [itemListenerMixin],
     data() {
       return {
         banners: [],
@@ -61,7 +63,7 @@
         isShowBackTop: false,
         tabOffsetTop: 0,
         isTabFixed: false,
-        scrollY: 0
+        scrollY: 0,
       }
     },
     computed: {
@@ -77,12 +79,6 @@
       this.getHomeGoods('sell');
     },
     mounted() {
-      // 防抖动代码，图片加载单位时间内一起执行
-      const refresh = debounce(this.$refs.scroll.refresh, 30);
-
-      this.$bus.$on("itemImgLoad", () => {
-        refresh();
-      })
 
       // 获取tabControl的吸顶高度
       // 组件没有offsetTop属性，从$el得到普通标签在获取offsetTop属性
@@ -143,6 +139,9 @@
     },
     deactivated() {
       this.scrollY = this.$refs.scroll.getScrollY();
+
+      // 离开home页面时取消监听
+      this.$bus.$off("itemImgLoad", this.itemListener);
     },
     /*destroyed() {
       console.log("销毁");

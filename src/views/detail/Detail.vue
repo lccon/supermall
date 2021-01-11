@@ -7,7 +7,8 @@
       <detail-shop-info :shop="shop"/>
       <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad"/>
       <detail-param-info :paramInfo="goodsParam"/>
-      <!--<detail-comment-info :commentInfo="commentInfo"/>-->
+      <detail-comment-info :commentInfo="commentInfo"/>
+      <goods-list :goods="recommend"/>
     </scroll>
   </div>
 </template>
@@ -20,10 +21,13 @@
   import DetailGoodsInfo from "./childComps/DetailGoodsInfo"
   import DetailParamInfo from "./childComps/DetailParamInfo"
   import DetailCommentInfo from "./childComps/DetailCommentInfo"
+  import GoodsList from "components/content/goods/GoodsList"
 
   import Scroll from "components/common/scroll/Scroll"
 
-  import {getDetail, Goods, Shop, GoodsParam} from 'network/detail'
+  import {getDetail, getRecommends, Goods, Shop, GoodsParam} from 'network/detail'
+  import {debounce} from 'common/utils'
+  import {itemListenerMixin} from "common/mixin"
 
   export default {
     name: "detail",
@@ -35,9 +39,11 @@
         shop: {},
         detailInfo: {},
         goodsParam: {},
-        commentInfo: {}
+        commentInfo: {},
+        recommend: [],
       }
     },
+    mixins: [itemListenerMixin],
     components: {
       DetailNavBar,
       DetailSwiper,
@@ -46,22 +52,23 @@
       Scroll,
       DetailGoodsInfo,
       DetailParamInfo,
-      DetailCommentInfo
+      DetailCommentInfo,
+      GoodsList
     },
     created() {
       // 保存传过来的id
-      console.log("route" + this.$route);
       this.iid = this.$route.query.iid;
-
-      console.log(this.iid);
 
       // 获取详情数据
       this.getDetail(this.iid);
+      // 获取详情页最下边详情数据；
+      this.getRecommends();
+    },
+    mounted() {
     },
     methods: {
       getDetail(iid) {
         getDetail(iid).then((res) => {
-          console.log(res);
           const data = res.data.result
           this.swiperItems = data.itemInfo.topImages;
           this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services);
@@ -73,10 +80,18 @@
           }
         })
       },
+      getRecommends() {
+        getRecommends().then((res) => {
+          this.recommend = res.data.data.list;
+        })
+      },
       imageLoad() {
-        //console.log("加载完成");
-        this.$refs.scroll.refresh();
-      }
+        //this.$refs.scroll.refresh();
+        this.itemListener;
+      },
+    },
+    destroyed() {
+      this.$bus.$off("itemImgLoad", this.itemListener);
     }
   }
 </script>
