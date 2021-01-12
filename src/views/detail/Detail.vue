@@ -13,6 +13,7 @@
       <detail-comment-info ref="comment" :commentInfo="commentInfo"/>
       <goods-list ref="recommendInfo" :goods="recommend"/>
     </scroll>
+    <detail-bottom-bar/>
   </div>
 </template>
 
@@ -25,6 +26,7 @@
   import DetailParamInfo from "./childComps/DetailParamInfo"
   import DetailCommentInfo from "./childComps/DetailCommentInfo"
   import GoodsList from "components/content/goods/GoodsList"
+  import DetailBottomBar from './childComps/DetailBottomBar'
 
   import Scroll from "components/common/scroll/Scroll"
 
@@ -59,7 +61,8 @@
       DetailGoodsInfo,
       DetailParamInfo,
       DetailCommentInfo,
-      GoodsList
+      GoodsList,
+      DetailBottomBar
     },
     created() {
       // 保存传过来的id
@@ -110,12 +113,13 @@
           this.locationScrollY.push(this.$refs.paramsInfo.$el.offsetTop);
           this.locationScrollY.push(this.$refs.comment.$el.offsetTop);
           this.locationScrollY.push(this.$refs.recommendInfo.$el.offsetTop);
+          this.locationScrollY.push(Number.MAX_VALUE);
 
-          // console.log(this.locationScrollY);
+          console.log(this.locationScrollY);
         }, 200);
       },
       scrollPosition(position) {
-        for(let i in this.locationScrollY) {
+        /*for(let i in this.locationScrollY) {
           const y = i * 1;
           // const y = parseInt(i);
           if(this.currentIndex !== y &&
@@ -123,6 +127,12 @@
             (y >= this.locationScrollY.length - 1 && this.locationScrollY[y] <= (-position.y))) {
             this.currentIndex = y
             this.$refs.topNavBar.currentIndex = this.currentIndex ;
+          }
+        }*/
+        for(let i=0; i<this.locationScrollY.length-1; i++) {
+          if(this.currentIndex !== i && this.locationScrollY[i] <= (-position.y) && this.locationScrollY[i+1] >= (-position.y)) {
+            this.currentIndex = i;
+            this.$refs.topNavBar.currentIndex = this.currentIndex;
           }
         }
       }
