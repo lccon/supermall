@@ -1,5 +1,5 @@
 <template>
-    <h2>购物车</h2>
+    <h2>{{$store.state.shopCart}}</h2>
 </template>
 
 <script>

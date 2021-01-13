@@ -31,11 +31,10 @@
   import TabControl from "components/content/tabControl/TabControl"
   import GoodList from "components/content/goods/GoodsList"
   import Scroll from "components/common/scroll/Scroll"
-  import BackTop from "components/content/backtop/BackTop"
 
   import {getHomeMultiData, getHomeGoods} from "network/home.js"
   import {debounce} from "common/utils"
-  import {itemListenerMixin} from "common/mixin"
+  import {itemListenerMixin, backTopMixin} from "common/mixin"
 
   export default {
     name: "home",
@@ -47,9 +46,8 @@
       TabControl,
       GoodList,
       Scroll,
-      BackTop
     },
-    mixins: [itemListenerMixin],
+    mixins: [itemListenerMixin, backTopMixin],
     data() {
       return {
         banners: [],
@@ -60,7 +58,6 @@
           'sell': {page:0, list:[]}
         },
         currentType: 'pop',
-        isShowBackTop: false,
         tabOffsetTop: 0,
         isTabFixed: false,
         scrollY: 0,
@@ -117,11 +114,10 @@
         this.$refs.tabControl1.currentIndex = index;
         this.$refs.tabControl2.currentIndex = index;
       },
-      backTopClick() {
-        this.$refs.scroll.scrollTo(0, 0, 500);
-      },
       scroll(position) {
-        this.isShowBackTop = -position.y > 1000;
+        // 混入实现，是否出现回到顶部图片
+        this.backTopCheck(position);
+        //this.isShowBackTop = -position.y > 1000;
         // 是否具有吸顶效果
         this.isTabFixed = -position.y >= this.tabOffsetTop
       },

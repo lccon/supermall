@@ -13,7 +13,8 @@
       <detail-comment-info ref="comment" :commentInfo="commentInfo"/>
       <goods-list ref="recommendInfo" :goods="recommend"/>
     </scroll>
-    <detail-bottom-bar/>
+    <back-top @click.native="backTopClick" v-show="isShowBackTop"/>
+    <detail-bottom-bar @addToCart="addToCart"/>
   </div>
 </template>
 
@@ -32,7 +33,7 @@
 
   import {getDetail, getRecommends, Goods, Shop, GoodsParam} from 'network/detail'
   import {debounce} from 'common/utils'
-  import {itemListenerMixin} from "common/mixin"
+  import {itemListenerMixin, backTopMixin} from "common/mixin"
 
   export default {
     name: "detail",
@@ -51,7 +52,7 @@
         currentIndex: null
       }
     },
-    mixins: [itemListenerMixin],
+    mixins: [itemListenerMixin, backTopMixin],
     components: {
       DetailNavBar,
       DetailSwiper,
@@ -115,7 +116,7 @@
           this.locationScrollY.push(this.$refs.recommendInfo.$el.offsetTop);
           this.locationScrollY.push(Number.MAX_VALUE);
 
-          console.log(this.locationScrollY);
+          //console.log(this.locationScrollY);
         }, 200);
       },
       scrollPosition(position) {
@@ -135,6 +136,20 @@
             this.$refs.topNavBar.currentIndex = this.currentIndex;
           }
         }
+
+        //this.isShowBackTop = -position.y > 1000;
+        // 混入实现，是否出现回到顶部图片
+        this.backTopCheck(position);
+      },
+      addToCart() {
+        const product = {};
+        product.image = this.swiperItems[0];
+        product.title = this.goods.title;
+        product.desc = this.goods.desc;
+        product.price = this.goods.realPrice;
+        product.iid = this.iid;
+        //this.$store.commit("addToCart", product);
+        this.$store.dispatch("addToCart", product);
       }
     },
     destroyed() {
@@ -161,7 +176,7 @@
   }
 
   .content {
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 49px);
     overflow: hidden;
   }
 </style>

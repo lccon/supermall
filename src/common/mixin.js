@@ -1,4 +1,5 @@
 import {debounce} from "./utils";
+import BackTop from "components/content/backtop/BackTop"
 
 // 抽取公共的进行混入合并
 export const itemListenerMixin = {
@@ -16,4 +17,23 @@ export const itemListenerMixin = {
     })
     //console.log("混入");
   }
+}
+
+export const backTopMixin = {
+  components: {
+    BackTop
+  },
+  data() {
+    return {
+      isShowBackTop: false,
+    }
+  },
+  methods: {
+    backTopClick() {
+      this.$refs.scroll.scrollTo(0, 0, 500);
+    },
+    backTopCheck(position) {
+      this.isShowBackTop = -position.y > 1000;
+    }
+  },
 }
