@@ -3,14 +3,15 @@
       <nar-bar class="nav-bar">
         <div slot="center">购物车({{shopCartNum}})</div>
       </nar-bar>
-
       <cart-list />
+      <cart-bottom-bar/>
     </div>
 </template>
 
 <script>
   import NarBar from "components/common/navbar/NarBar"
   import CartList from "./childComps/CartList"
+  import CartBottomBar from "./childComps/CartBottomBar"
 
   import {mapGetters} from "vuex"
 
@@ -18,7 +19,8 @@
     name: "cart",
     components: {
       NarBar,
-      CartList
+      CartList,
+      CartBottomBar
     },
     computed: {
       //第一种方式 数组方式

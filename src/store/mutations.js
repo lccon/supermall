@@ -5,6 +5,7 @@ export default {
     payload.count += 1;
   },
   [ADD_TO_CART](state, payload) {
+    payload.isChecked = true;
     state.shopCart.push(payload);
   }
 }

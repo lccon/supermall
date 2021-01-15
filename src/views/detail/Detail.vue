@@ -35,6 +35,9 @@
   import {debounce} from 'common/utils'
   import {itemListenerMixin, backTopMixin} from "common/mixin"
 
+  import {mapActions} from "vuex"
+
+
   export default {
     name: "detail",
     data() {
@@ -79,6 +82,9 @@
     mounted() {
     },
     methods: {
+      ...mapActions({
+        'addCart': 'addToCart',
+      }),
       getDetail(iid) {
         getDetail(iid).then((res) => {
           const data = res.data.result
@@ -148,8 +154,10 @@
         product.desc = this.goods.desc;
         product.price = this.goods.realPrice;
         product.iid = this.iid;
-        //this.$store.commit("addToCart", product);
-        this.$store.dispatch("addToCart", product);
+
+        this.addCart(product).then(res => {
+          console.log(res);
+        })
       }
     },
     destroyed() {
@@ -163,6 +171,7 @@
       this.locationScrollY.push(this.$refs.recommendInfo.$el.offsetTop);
 
       console.log(this.locationScrollY);
+      11555.64
     }*/
   }
 </script>
