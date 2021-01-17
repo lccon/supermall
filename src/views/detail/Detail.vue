@@ -15,6 +15,7 @@
     </scroll>
     <back-top @click.native="backTopClick" v-show="isShowBackTop"/>
     <detail-bottom-bar @addToCart="addToCart"/>
+    <!--<toast :toast-msg="toastMsg" :is-show="isShow"/>-->
   </div>
 </template>
 
@@ -37,6 +38,7 @@
 
   import {mapActions} from "vuex"
 
+  /*import Toast from "components/common/toast/Toast"*/
 
   export default {
     name: "detail",
@@ -52,7 +54,9 @@
         recommend: [],
         locationScrollY: [],
         locationDebounceFun: null,
-        currentIndex: null
+        currentIndex: null,
+        /*toastMsg: '',
+        isShow: false*/
       }
     },
     mixins: [itemListenerMixin, backTopMixin],
@@ -66,7 +70,8 @@
       DetailParamInfo,
       DetailCommentInfo,
       GoodsList,
-      DetailBottomBar
+      DetailBottomBar,
+      /*Toast*/
     },
     created() {
       // 保存传过来的id
@@ -156,7 +161,15 @@
         product.iid = this.iid;
 
         this.addCart(product).then(res => {
-          console.log(res);
+          /*this.isShow = true;
+          this.toastMsg = res;
+
+          setTimeout(() => {
+            this.isShow = false;
+            this.toastMsg = '';
+          }, 5000)*/
+          this.$toast.show(res, 3000);
+          //this.$toast.show();
         })
       }
     },

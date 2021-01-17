@@ -9,9 +9,11 @@
         合计：{{totalPrice}}
       </div>
 
-      <div class="calculation">
+      <div class="calculation" @click="calculationClick">
         去计算({{checkLength}})
       </div>
+
+      <!--<toast :toast-msg="toastMsg" :is-show="isShow"/>-->
     </div>
 </template>
 
@@ -19,13 +21,18 @@
   import CheckButton from "components/content/checkButton/CheckButton"
   import {mapGetters} from "vuex"
 
+  /*import Toast from "components/common/toast/Toast"*/
+
   export default {
     name: "cart-bottom-bar",
     components: {
-      CheckButton
+      CheckButton,
+      /*Toast*/
     },
     data() {
       return {
+        /*toastMsg: '',
+        isShow: false*/
       }
     },
     computed: {
@@ -60,6 +67,11 @@
           this.shopCartList.map(item => {
             return item.isChecked = true;
           })
+        }
+      },
+      calculationClick() {
+        if(!this.isSelectAll){
+          this.$toast.show("请选择购买的商品", 3000);
         }
       }
     }
